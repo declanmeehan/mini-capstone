@@ -1,7 +1,9 @@
 Rails.application.routes.draw do
-
-  get "/products_all" => "products#products_all_method"
-  get "/products_1" => "products#products_1_method"
-  get "/products_2" => "products#products_2_method"
-  get "/products_3" => "products#products_3_method"
+  namespace :v1 do
+    get "/products" => "products#index"
+    post "/products" => "products#create"
+    patch "/products/:id" => "products#update"
+    get "/products/:id" => "products#show"
+    delete "products/:id" => "products#destory"
+  end
 end
