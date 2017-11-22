@@ -1,0 +1,2 @@
+class ChangePriceFromStringToDecimal < ApplicationRecord
+end
