@@ -9,6 +9,8 @@ params = {}
 
 puts "Please enter a number:"
 puts "[1] show all products"
+puts "[1.1] search products by name" 
+puts "[1.2] search products by price" 
 puts "[2] create a product"
 puts "[3] show a product"
 puts "[4] update a product"
@@ -19,6 +21,18 @@ if answer_crud == "1"
   response = Unirest.get("http://localhost:3000/v1/products")
   body = response.body
   pp body
+elsif answer_crud == "1.1"
+ print "enter product name: "
+ search_name = gets.chomp
+ response = Unirest.get("http://localhost:3000/v1/products?search_name=#{search_name}")
+ search_name = response.body
+ pp response_name
+elsif answer_crud == "1.2"
+ print "enter product price: "
+ response_price = gets.chomp
+ response = Unirest.get("http://localhost:3000/v1/products?search_price=#{search_price}")
+ search_name = response.body
+ pp search_price
 elsif answer_crud == "2"
   print "enter product name: "
   params["name"] = gets.chomp
@@ -30,7 +44,7 @@ elsif answer_crud == "2"
   params["description"] = gets.chomp
   response = Unirest.post("http://localhost:3000/v1/products", parameters: params)
   body = response.body
-  p body
+  pp body
 elsif answer_crud == "3" 
   puts "please enter an id number"
   answer_id = gets.chomp

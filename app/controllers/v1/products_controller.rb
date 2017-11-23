@@ -1,8 +1,13 @@
 class V1::ProductsController < ApplicationController
 
   def index 
-    products = Product.all
-    render json: products.as_json
+    product = Product.all.order(:id => :asc)
+    if [:search_name]
+    product = Product.where('name ILIKE ?', "%#{params[:search_name]}%")
+    elsif [:search_price]
+     product = Product.where('price ILIKE ?', "%#{params[:search_price]}%")
+    end
+    render json: product.as_json
   end
 
   def create
@@ -15,7 +20,7 @@ class V1::ProductsController < ApplicationController
     if product.save
     render json: product.as_json
     else
-      render json: {errors: product.errors.full_messages}, status: bad_request
+      render json: {errors: product.errors.full_messages}, status: :bad_request
     end
   end
 
@@ -35,7 +40,7 @@ class V1::ProductsController < ApplicationController
     if product.save
       render json: product.as_json
     else
-      render json: {errors: product.errors.full_messages}, status: bad_request
+      render json: {errors: product.errors.full_messages}, status: :bad_request
     end
   end
 
