@@ -2,10 +2,11 @@ class V1::ProductsController < ApplicationController
 
   def index 
     product = Product.all.order(:id => :asc)
-    if [:search_name]
-    product = Product.where('name ILIKE ?', "%#{params[:search_name]}%")
-    elsif [:search_price]
-     product = Product.where('price ILIKE ?', "%#{params[:search_price]}%")
+    if params[:search]
+      product = Product.where('name ILIKE ?', "%#{params[:search]}%")
+   end
+    if params[:search_price]
+      product = Product.where('price = ?', params[:search_price].to_d)
     end
     render json: product.as_json
   end

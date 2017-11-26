@@ -22,17 +22,17 @@ if answer_crud == "1"
   body = response.body
   pp body
 elsif answer_crud == "1.1"
- print "enter product name: "
- search_name = gets.chomp
- response = Unirest.get("http://localhost:3000/v1/products?search_name=#{search_name}")
- search_name = response.body
- pp response_name
+  print "enter product name: "
+  search_name = gets.chomp
+  response = Unirest.get("http://localhost:3000/v1/products?search=#{search_name}")
+  product = response.body
+  pp product
 elsif answer_crud == "1.2"
- print "enter product price: "
- response_price = gets.chomp
- response = Unirest.get("http://localhost:3000/v1/products?search_price=#{search_price}")
- search_name = response.body
- pp search_price
+  print "enter product price: "
+  response_price = gets.chomp
+  response = Unirest.get("http://localhost:3000/v1/products?search_price=#{response_price}")
+  product = response.body
+  pp product
 elsif answer_crud == "2"
   print "enter product name: "
   params["name"] = gets.chomp

@@ -3,6 +3,9 @@ class Product < ApplicationRecord
   validates :price, numericality: true
   validates :description, length: { in: 20..500 }
 
+  def supplier_id
+    supplier_id.to_f
+  end
 
 
   def is_discounted
@@ -27,6 +30,7 @@ class Product < ApplicationRecord
     is_discounted: is_discounted,
     tax: tax,
     total: total
+    supplier_id: supplier_id
   }
   end
 end
