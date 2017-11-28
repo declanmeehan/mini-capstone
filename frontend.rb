@@ -85,8 +85,24 @@ while true
     response = Unirest.post("http://localhost:3000/v1/users", parameters: params)
     pp response.body
   elsif answer_crud == "login"
-    
-  elsif input_option == "q"
+    puts "Login to the app"
+    params = {}
+    print "Email: "
+    params[:email] = gets.chomp
+    print "Password: "
+    params[:password] = gets.chomp
+    response = Unirest.post("http://localhost:3000/user-token", parameters: {auth: {email: params[:email], password: params[:password]}}
+      )
+    pp response.body
+
+    jwt = response.body["jwt"]
+
+    Unirest.default_header("Authorization", "Bearer #{{jwt}}")
+  elsif answer_crud == "logout"
+    jwt = ""
+    puts "Logged out"
+    Unirest.clear_default_headers()
+  elsif answer_crud == "q"
     puts "Goodbye!"
     break
   else 
