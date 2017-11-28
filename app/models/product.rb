@@ -3,10 +3,15 @@ class Product < ApplicationRecord
   validates :price, numericality: true
   validates :description, length: { in: 20..500 }
 
-  def supplier_id
-    supplier_id.to_f
-  end
+  belongs_to :supplier
+  # def supplier
+  #   Supplier.find_by(id: self.supplier_id)
+  # end
 
+has_many :images
+  # def image
+  #   Image.where(id: self.image.id)
+  # end
 
   def is_discounted
      price.to_f <= 2
@@ -25,12 +30,12 @@ class Product < ApplicationRecord
     id: id,
     name: name,
     price: price.to_i,
-    image: image,
+    image: image.as_json,
     description: description,
     is_discounted: is_discounted,
     tax: tax,
-    total: total
-    supplier_id: supplier_id
+    total: total,
+    supplier: supplier.as_json
   }
   end
 end

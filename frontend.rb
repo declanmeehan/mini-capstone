@@ -2,74 +2,99 @@ require 'unirest'
 require 'tty-table'
 require 'tty-prompt'
 require 'pp'
+while true
+  system "clear"
 
-system "clear"
-
-params = {}
-
-puts "Please enter a number:"
-puts "[1] show all products"
-puts "[1.1] search products by name" 
-puts "[1.2] search products by price" 
-puts "[2] create a product"
-puts "[3] show a product"
-puts "[4] update a product"
-puts "[5] delete a product"
-answer_crud = gets.chomp
-
-if answer_crud == "1"
-  response = Unirest.get("http://localhost:3000/v1/products")
-  body = response.body
-  pp body
-elsif answer_crud == "1.1"
-  print "enter product name: "
-  search_name = gets.chomp
-  response = Unirest.get("http://localhost:3000/v1/products?search=#{search_name}")
-  product = response.body
-  pp product
-elsif answer_crud == "1.2"
-  print "enter product price: "
-  response_price = gets.chomp
-  response = Unirest.get("http://localhost:3000/v1/products?search_price=#{response_price}")
-  product = response.body
-  pp product
-elsif answer_crud == "2"
-  print "enter product name: "
-  params["name"] = gets.chomp
-  print "enter product price: "
-  params["price"] = gets.chomp
-  print "enter product image: "
-  params["image"] = gets.chomp
-  print "enter product Description: "
-  params["description"] = gets.chomp
-  response = Unirest.post("http://localhost:3000/v1/products", parameters: params)
-  body = response.body
-  pp body
-elsif answer_crud == "3" 
-  puts "please enter an id number"
-  answer_id = gets.chomp
-  response = Unirest.get("http://localhost:3000/v1/products/#{answer_id}")
-elsif answer_crud == "4"
   params = {}
-  print "enter a the product id that you would like to update: "
-  answer_update = gets.chomp
-  print "enter product name: "
-  params["name"] = gets.chomp
-  print "enter product price: "
-  params["price"] = gets.chomp
-  print "enter product image: "
-  params["image"] = gets.chomp
-  print "enter product Description: "
-  params["description"] = gets.chomp
-  response = Unirest.patch("http://localhost:3000/v1/products/#{answer_update}", parameters: params)
-  body = response.body
-  pp body
-elsif answer_crud == "5"
-  print "what product would you like to delete? "
-  answer_delete = gets.chomp
-  response = Unirest.delete("http://localhost:3000/v1/products/#{answer_delete}")
-else 
-  puts "Next time enter a valid number you dummy"
+
+  puts "Please enter a number:"
+  puts "[1] show all products"
+  puts "[1.1] search products by name" 
+  puts "[1.2] search products by price" 
+  puts "[2] create a product"
+  puts "[3] show a product"
+  puts "[4] update a product"
+  puts "[5] delete a product"
+  puts "[signup] sign up as a new user"
+  puts "[login] login"
+  puts "[logout] logout"
+  puts "[q] Quit"
+  answer_crud = gets.chomp
+
+  if answer_crud == "1"
+    response = Unirest.get("http://localhost:3000/v1/products")
+    body = response.body
+    pp body
+  elsif answer_crud == "1.1"
+    print "enter product name: "
+    search_name = gets.chomp
+    response = Unirest.get("http://localhost:3000/v1/products?search=#{search_name}")
+    product = response.body
+    pp product
+  elsif answer_crud == "1.2"
+    print "enter product price: "
+    response_price = gets.chomp
+    response = Unirest.get("http://localhost:3000/v1/products?search_price=#{response_price}")
+    product = response.body
+    pp product
+  elsif answer_crud == "2"
+    print "enter product name: "
+    params["name"] = gets.chomp
+    print "enter product price: "
+    params["price"] = gets.chomp
+    print "enter product image: "
+    params["image"] = gets.chomp
+    print "enter product Description: "
+    params["description"] = gets.chomp
+    response = Unirest.post("http://localhost:3000/v1/products", parameters: params)
+    body = response.body
+    pp body
+  elsif answer_crud == "3" 
+    puts "please enter an id number"
+    answer_id = gets.chomp
+    response = Unirest.get("http://localhost:3000/v1/products/#{answer_id}")
+  elsif answer_crud == "4"
+    params = {}
+    print "enter a the product id that you would like to update: "
+    answer_update = gets.chomp
+    print "enter product name: "
+    params["name"] = gets.chomp
+    print "enter product price: "
+    params["price"] = gets.chomp
+    print "enter product image: "
+    params["image"] = gets.chomp
+    print "enter product Description: "
+    params["description"] = gets.chomp
+    response = Unirest.patch("http://localhost:3000/v1/products/#{answer_update}", parameters: params)
+    body = response.body
+    pp body
+  elsif answer_crud == "5"
+    print "what product would you like to delete? "
+    answer_delete = gets.chomp
+    response = Unirest.delete("http://localhost:3000/v1/products/#{answer_delete}")
+  elsif answer_crud == "signup"
+    params = {}
+    puts "enter username: "
+    params[:name] = gets.chomp
+    puts "enter email: "
+    params[:email] = gets.chomp
+    puts "enter password"
+    params[:password] = gets.chomp
+    puts "please re-enter password"
+    params[:password_confirmation] = gets.chomp
+    response = Unirest.post("http://localhost:3000/v1/users", parameters: params)
+    pp response.body
+  elsif answer_crud == "login"
+    
+  elsif input_option == "q"
+    puts "Goodbye!"
+    break
+  else 
+    puts "Please enter a valid command"
+  end
+  puts 
+  puts
+  gets.chomp
 end
   
 
