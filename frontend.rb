@@ -2,9 +2,22 @@ require 'unirest'
 require 'tty-table'
 require 'tty-prompt'
 require 'pp'
+
+    response = Unirest.post("http://localhost:3000/v1/user_token", parameters: {auth: {email: "fake@email.com", password: "password"}}
+      )
+   response.body
+     jwt = response.body["jwt"]
+     Unirest.default_header("Authorization", "Bearer #{jwt}")
+
 while true
   system "clear"
-
+  if jwt == ""
+      login_status = "You are currently logged out"
+    else 
+      login_status = "you are currently logged in"
+    end
+  puts login_status
+  puts
   params = {}
 
   puts "Please enter a number:"
@@ -12,9 +25,11 @@ while true
   puts "[1.1] search products by name" 
   puts "[1.2] search products by price" 
   puts "[2] create a product"
+  puts "[2.1] create an order"
   puts "[3] show a product"
   puts "[4] update a product"
   puts "[5] delete a product"
+  puts "[6] show all current user orders"
   puts "[signup] sign up as a new user"
   puts "[login] login"
   puts "[logout] logout"
@@ -47,8 +62,17 @@ while true
     print "enter product Description: "
     params["description"] = gets.chomp
     response = Unirest.post("http://localhost:3000/v1/products", parameters: params)
+    order = response.body
+    pp order
+  elsif answer_crud == "2.1"
+    params = {}
+    puts "enter product_id"
+    params[:product_id] = gets.chomp
+    puts "enter quantity"
+    params[:quantity] = gets.chomp
+    response = Unirest.post("http://localhost:3000/v1/orders", parameters: params)
     body = response.body
-    pp body
+    p body
   elsif answer_crud == "3" 
     puts "please enter an id number"
     answer_id = gets.chomp
@@ -72,6 +96,10 @@ while true
     print "what product would you like to delete? "
     answer_delete = gets.chomp
     response = Unirest.delete("http://localhost:3000/v1/products/#{answer_delete}")
+  elsif answer_crud == "6"
+     response = Unirest.get("http://localhost:3000/v1/orders")
+     orders = response.body
+     pp orders 
   elsif answer_crud == "signup"
     params = {}
     puts "enter username: "
@@ -91,13 +119,13 @@ while true
     params[:email] = gets.chomp
     print "Password: "
     params[:password] = gets.chomp
-    response = Unirest.post("http://localhost:3000/user-token", parameters: {auth: {email: params[:email], password: params[:password]}}
+    response = Unirest.post("http://localhost:3000/v1/user_token", parameters: {auth: {email: params[:email], password: params[:password]}}
       )
     pp response.body
 
     jwt = response.body["jwt"]
 
-    Unirest.default_header("Authorization", "Bearer #{{jwt}}")
+    Unirest.default_header("Authorization", "Bearer #{jwt}")
   elsif answer_crud == "logout"
     jwt = ""
     puts "Logged out"
@@ -109,7 +137,7 @@ while true
     puts "Please enter a valid command"
   end
   puts 
-  puts
+  puts "press any key to continue"
   gets.chomp
 end
   

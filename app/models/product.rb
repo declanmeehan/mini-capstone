@@ -7,8 +7,8 @@ class Product < ApplicationRecord
   # def supplier
   #   Supplier.find_by(id: self.supplier_id)
   # end
-
-has_many :images
+  has_many :orders
+  has_many :images
   # def image
   #   Image.where(id: self.image.id)
   # end
@@ -30,7 +30,7 @@ has_many :images
     id: id,
     name: name,
     price: price.to_i,
-    image: image.as_json,
+    images: images.as_json,
     description: description,
     is_discounted: is_discounted,
     tax: tax,

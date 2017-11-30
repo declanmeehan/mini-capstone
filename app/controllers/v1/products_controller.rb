@@ -1,5 +1,7 @@
 class V1::ProductsController < ApplicationController
 
+
+
   def index 
     product = Product.all.order(:id => :asc)
     if params[:search]
